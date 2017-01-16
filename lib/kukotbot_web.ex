@@ -20,6 +20,12 @@ defmodule Kukotbot.Web do
     |> halt
   end
 
+  get "/url" do
+    conn
+    |> send_resp(200, Telegram.bot_url)
+    |> halt
+  end
+
   match _ do
     send_resp(conn, 404, "oops")
   end
