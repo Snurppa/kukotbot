@@ -14,7 +14,7 @@ defmodule Kukotbot.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :cowboy, :plug],
+    [applications: [:logger, :cowboy, :plug, :httpoison, :poison],
      mod: {Kukotbot.Api, []}]
   end
 
@@ -29,6 +29,8 @@ defmodule Kukotbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:cowboy, "~> 1.0.4"},
-     {:plug, "~> 1.3.0"}]
+     {:plug, "~> 1.3.0"},
+     {:httpoison, "~> 0.11.0"},
+     {:poison, "~> 3.0"}]
   end
 end
