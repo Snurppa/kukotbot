@@ -11,7 +11,7 @@ defmodule Kukotbot.Web do
   end
 
   def start_link do
-    {:ok, _} = Plug.Adapters.Cowboy.http HexVersion.Web, []
+    {:ok, _} = Plug.Adapters.Cowboy.http Kukotbot.Web, []
   end
 
   get "/" do
