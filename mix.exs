@@ -15,7 +15,7 @@ defmodule Kukotbot.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger, :cowboy, :plug],
-   mod: {Kukotbot.Api, []]
+     mod: {Kukotbot.Api, []}]
   end
 
   # Dependencies can be Hex packages:

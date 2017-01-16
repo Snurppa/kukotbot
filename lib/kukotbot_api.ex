@@ -8,7 +8,7 @@ defmodule Kukotbot.Api do
       worker(Kukotbot.Web, [])
     ]
 
-    opts = [strategy: :one_for_one, name: HexVersion.Supervisor]
+    opts = [strategy: :one_for_one, name: Kukotbot.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
