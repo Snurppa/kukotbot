@@ -5,11 +5,19 @@ defmodule Telegram.Updates do
     HTTP.JSON.get!(Telegram.bot_url <> @updates_path).body
   end
 
+  @doc """
+  Fetches updates from Telegram /getUpdates method.
+  Returns collection of Telegram Update maps.
+  """
   def get_updates(update_id) do
     payload = %{"offset": update_id}
     case HTTP.JSON.post(Telegram.bot_url <> @updates_path, payload) do
-      {:ok, response} ->
-        response.body
+      {:ok, %{:body => body}} ->
+        if body["ok"] do
+          Map.get(body, "result")
+        else
+         raise "Telegram getUpdates API error: #{body["description"]}"
+       end
       {:error, response} ->
         raise "Telegram getUpdates failure: #{response}"
     end
