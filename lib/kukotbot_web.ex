@@ -16,7 +16,7 @@ defmodule Kukotbot.Web do
 
   get "/" do
     conn
-    |> send_resp(200, "ok")
+    |> send_resp(200, Telegram.get_update)
     |> halt
   end
 

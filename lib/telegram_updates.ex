@@ -2,7 +2,7 @@ defmodule Telegram.Updates do
   @updates_path "/getUpdates"
 
   def get_updates do
-    HTTP.JSON.get!(Telegram.bot_url <> @updates_path).body
+    get_in(HTTP.JSON.get!(Telegram.bot_url <> @updates_path).body, ["result"])
   end
 
   @doc """

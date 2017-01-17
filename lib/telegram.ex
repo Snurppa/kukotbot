@@ -13,4 +13,11 @@ defmodule Telegram do
       nil
     end
   end
+
+  def get_update do
+    Telegram.Updates.get_updates
+    |> hd
+    |> parse_command
+    |> Poison.encode!
+  end
 end
