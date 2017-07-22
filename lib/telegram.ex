@@ -1,4 +1,5 @@
 defmodule Telegram do
+  require Logger
   @bot_url Application.get_env(:kukotbot, :telegram_url) <> "bot" <> Application.get_env(:kukotbot, :bot_api_key)
 
   def bot_url, do: @bot_url
@@ -14,10 +15,28 @@ defmodule Telegram do
     end
   end
 
+  def process_update(update) do
+    cmd = parse_command(update)
+    if cmd do
+      Logger.info fn -> "Got command #{cmd.command} with args #{cmd.args}" end
+      cmd
+    end
+  end
+
+  def process_updates(updates) do # process in parallel processes?
+    if length(updates) > 0 do
+      Logger.info fn ->
+        "Received #{length(updates)} updates"
+      end
+      updates
+      |> Enum.map(&process_update/1)
+      |> Enum.filter(&is_map/1)
+    end
+  end
+
   def get_update do
     Telegram.Updates.get_updates
-    |> hd
-    |> parse_command
+    |> process_updates
     |> Poison.encode!
   end
 end
