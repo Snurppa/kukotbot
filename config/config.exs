@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :kukotbot_api, key: :value
+#     config :kukotbot, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:kukotbot_api, :key)
+#     Application.get_env(:kukotbot, :key)
 #
 # Or configure a 3rd-party app:
 #
@@ -31,6 +31,6 @@ use Mix.Config
 
 import_config "bot.exs"
 
-config :kukotbot_api,
+config :kukotbot,
   telegram_url: "https://api.telegram.org/"
 

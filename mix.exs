@@ -2,7 +2,7 @@ defmodule Kukotbot.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :kukotbot_api,
+    [app: :kukotbot,
      version: "0.1.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
@@ -15,7 +15,7 @@ defmodule Kukotbot.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger, :cowboy, :plug, :httpoison, :poison],
-     mod: {Kukotbot.Api, []}]
+     mod: {Kukotbot, []}]
   end
 
   # Dependencies can be Hex packages:
