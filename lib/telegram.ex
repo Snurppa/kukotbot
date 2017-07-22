@@ -37,6 +37,5 @@ defmodule Telegram do
   def get_update do
     Telegram.Updates.get_updates
     |> process_updates
-    |> Poison.encode!
   end
 end
