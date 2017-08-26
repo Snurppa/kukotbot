@@ -76,7 +76,7 @@ defmodule Telegram.Updates do
     if is_map(last_update) do
       update_loop(Map.get(last_update, "update_id") + 1)
     else
-      Process.sleep(1000)
+      Process.sleep(10000)
       update_loop(update_id)
     end
   end
