@@ -1,0 +1,21 @@
+sudo yum install -y epel-release git
+
+sudo yum groupinstall "Development Tools"
+sudo yum install ncurses-devel openssl-devel
+# erlang
+wget http://www.erlang.org/download/otp_src_19.3.tar.gz
+tar -zxvf otp_src_19.3.tar.gz
+rm otp_src_19.3.tar.gz
+cd otp_src_19.3/
+./configure
+make
+sudo make install
+
+cd ..
+
+# elixir Precompiled
+wget https://github.com/elixir-lang/elixir/releases/download/v1.5.1/Precompiled.zip
+unzip -d elixir Precompiled
+echo "PATH=\$PATH:/home/ec2-user/elixir/bin" >> ~/.bashrc
+
+cd ..
