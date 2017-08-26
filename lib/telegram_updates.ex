@@ -15,8 +15,8 @@ defmodule Telegram.Updates do
   Returns collection of Telegram Update maps.
   """
   def get_updates(update_id) do
-    payload = %{"offset": update_id, "timeout": 120}
-    case Telegram.post(@updates_path, payload, [], [recv_timeout: 130000]) do
+    payload = %{"offset": update_id, "timeout": 300}
+    case Telegram.post(@updates_path, payload, [], [recv_timeout: 310000]) do
       {:ok, %{:body => body}} ->
         if body["ok"] do
           Map.get(body, "result")
