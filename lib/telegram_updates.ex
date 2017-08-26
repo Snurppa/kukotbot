@@ -3,17 +3,6 @@ defmodule Telegram.Updates do
 
   @updates_path "/getUpdates"
 
-  def parse_command(update_object) do
-    command_text = get_in(update_object, ["message", "text"])
-    if String.starts_with?(command_text, "/") do
-      {_, command} = String.split_at(command_text, 1)
-      [command, args] = String.split(command, " ", parts: 2)
-      %{command: command, args: args, update: update_object}
-    else
-      nil
-    end
-  end
-
   def get_updates do
     Telegram.get!(@updates_path)
     |> Map.get(:body)
@@ -39,9 +28,10 @@ defmodule Telegram.Updates do
   end
 
   def process_update(update) do
-    cmd = parse_command(update)
-    if cmd do
-      Logger.info fn -> "Received command #{cmd.command} with args #{cmd.args}" end
+    cmd = Telegram.Commands.parse_command(update)
+    if is_tuple(cmd) do
+      {c, rest} = cmd
+      Logger.info fn -> "Received command '#{to_string(c)}' with args #{rest.args}" end
       cmd
     else
       Logger.info fn ->
@@ -62,7 +52,8 @@ defmodule Telegram.Updates do
       end
       updates
       |> Enum.map(&process_update/1)
-      |> Enum.filter(&is_map/1)
+      |> Enum.filter(&is_tuple/1)
+      |> Enum.map(&Telegram.Commands.execute_command/1)
     end
   end
 
