@@ -18,9 +18,8 @@ defmodule Telegram.Commands do
       {:echo, %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'echo' with args #{args}" end
         cid = get_in(update, ["message", "chat", "id"])
-        text = get_in(update, ["message", "text"])
         name = get_in(update, ["message", "from", "first_name"])
-        Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> text)
+        Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> args)
         update # Return update for calculating next update cycle
       {:saa, %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'saa' with args #{args}" end
