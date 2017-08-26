@@ -1,4 +1,5 @@
 defmodule Telegram.Updates do
+  use Task, restart: :permanent
   require Logger
 
   @updates_path "/getUpdates"
@@ -64,18 +65,24 @@ defmodule Telegram.Updates do
   end
 
   def get_update do
-    get_updates
+    get_updates()
     |> process_updates
   end
 
   def update_loop(update_id) do
+    Logger.info fn -> "Update loop with id " <> to_string(update_id) end
     last_update = get_updates(update_id)
     |> process_updates
     if is_map(last_update) do
       update_loop(Map.get(last_update, "update_id") + 1)
     else
+      Process.sleep(1000)
       update_loop(update_id)
     end
+  end
+
+  def start_link() do
+    Task.start_link(__MODULE__, :update_loop,[0])
   end
 
 end
