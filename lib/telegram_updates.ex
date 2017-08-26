@@ -50,16 +50,32 @@ defmodule Telegram.Updates do
         "Received #{length(updates)} updates:"
         <> inspect(updates, pretty: true)
       end
-      updates
-      |> Enum.map(&process_update/1)
-      |> Enum.filter(&is_tuple/1)
-      |> Enum.map(&Telegram.Commands.execute_command/1)
+      commands = updates
+        |> Enum.map(&process_update/1)
+        |> Enum.filter(&is_tuple/1)
+      if length(commands) > 0 do
+        commands
+        |> Enum.map(&Telegram.Commands.execute_command/1)
+        |> Enum.max_by(fn(u) -> Map.get(u, "update_id") end)
+      else
+        Enum.max_by(updates, fn(u) -> Map.get(u, "update_id") end)
+      end
     end
   end
 
   def get_update do
     get_updates
     |> process_updates
+  end
+
+  def update_loop(update_id) do
+    last_update = get_updates(update_id)
+    |> process_updates
+    if is_map(last_update) do
+      update_loop(Map.get(last_update, "update_id") + 1)
+    else
+      update_loop(update_id)
+    end
   end
 
 end

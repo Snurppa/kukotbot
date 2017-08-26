@@ -21,13 +21,13 @@ defmodule Telegram.Commands do
         text = get_in(update, ["message", "text"])
         name = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> text)
-        {:ok, update}
+        update # Return update for calculating next update cycle
       {:saa, %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         random_texts = ["Ei pysty, liian hapokasta", "D'oh", "No habla finlandes"]
         cid = get_in(update, ["message", "chat", "id"])
         Telegram.Methods.sendMessage(cid, Enum.random(random_texts))
-        {:ok, update}
+        update # Return update for calculating next update cycle
     end
   end
 
