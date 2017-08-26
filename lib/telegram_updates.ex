@@ -35,12 +35,14 @@ defmodule Telegram.Updates do
       Logger.info fn -> "Received command '#{to_string(c)}' with args #{rest.args}" end
       cmd
     else
-      Logger.info fn ->
-        "Received plain message '"
-        <> get_in(update, ["message", "text"])
-        <> "' from user "
-        <> get_in(update, ["message", "from", "first_name"])
-        <> " " <> get_in(update, ["message", "from", "last_name"])
+      if get_in(update, ["message", "text"]) do
+        Logger.info fn ->
+          "Received plain message '"
+          <> get_in(update, ["message", "text"])
+          <> "' from user "
+          <> get_in(update, ["message", "from", "first_name"])
+          <> " " <> get_in(update, ["message", "from", "last_name"])
+        end
       end
     end
   end
