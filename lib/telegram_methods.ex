@@ -22,7 +22,11 @@ defmodule Telegram.Methods do
     case Telegram.post("/sendMessage", %{:text => text, :chat_id => cid}) do
       {:ok, %{:status_code => 200, :body => body}} ->
         if body["ok"] do
-          Map.get(body, "result")
+          chat = get_in(body, ["result", "chat"])
+          Logger.info fn ->
+            "200 sendMessage successfully sent message to chat: " <> inspect(chat)
+          end
+          body
         else
          Logger.error fn -> "200 sendMessage not ok: #{body["description"]}" end
         end
