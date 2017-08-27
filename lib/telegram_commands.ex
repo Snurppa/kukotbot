@@ -5,7 +5,7 @@ defmodule Telegram.Commands do
     command_text = get_in(update_object, ["message", "text"])
     if command_text && String.starts_with?(command_text, "/") do
       {_, command} = String.split_at(command_text, 1)
-      case String.split(command, " ", parts: 2) do
+      case String.split(String.downcase(command), " ", parts: 2) do
         [cmd, args] -> {String.to_atom(cmd), %{args: args, update: update_object}}
         [single_command] -> {String.to_atom(single_command), %{args: "", update: update_object}}
       end
@@ -22,7 +22,6 @@ defmodule Telegram.Commands do
         cid = get_in(update, ["message", "chat", "id"])
         name = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> args)
-        update # Return update for calculating next update cycle
       {:saa, %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         date_to_msg = fn(date_str) ->
@@ -41,8 +40,17 @@ defmodule Telegram.Commands do
         end
         cid = get_in(update, ["message", "chat", "id"])
         Telegram.Methods.sendMessage(cid, msg)
-        update # Return update for calculating next update cycle
+      {:kajaani, %{:args => args, :update => update}} ->
+        cid = get_in(update, ["message", "chat", "id"])
+        msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
+        Telegram.Methods.sendMessage(cid, Enum.random(msgs))
+      {fail, %{:update => update}} ->
+        cid = get_in(update, ["message", "chat", "id"])
+        Logger.warn fn -> "Unknown command #{fail}" end
+        Telegram.Methods.sendMessage(cid, "Sori '#{fail}' ei oo tuttu...")
     end
+    {_, %{:update => update}} = cmd
+    update
   end
 
 end
