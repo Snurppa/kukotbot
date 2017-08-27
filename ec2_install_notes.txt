@@ -19,3 +19,10 @@ unzip -d elixir Precompiled
 echo "PATH=\$PATH:/home/ec2-user/elixir/bin" >> ~/.bashrc
 
 cd ..
+
+
+git clone https://github.com/Snurppa/kukotbot.git
+cd kukotbot
+cp ~/bot.exs config/
+mix deps.get
+# mix run --no-halt | tee ~/kukotbot.log
