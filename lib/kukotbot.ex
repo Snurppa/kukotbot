@@ -9,7 +9,7 @@ defmodule Kukotbot do
       worker(Telegram.Updates, [])
     ]
 
-    opts = [strategy: :one_for_one, name: Kukotbot.Supervisor]
+    opts = [strategy: :one_for_one, name: Kukotbot.Supervisor, max_restarts: 5, max_seconds: 10]
     Supervisor.start_link(children, opts)
   end
 end

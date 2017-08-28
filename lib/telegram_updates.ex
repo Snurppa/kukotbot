@@ -38,16 +38,18 @@ defmodule Telegram.Updates do
       if get_in(update, ["message", "text"]) do
         Logger.info fn ->
           "Received plain message '"
-          <> get_in(update, ["message", "text"])
-          <> "' from user "
-          <> get_in(update, ["message", "from", "first_name"])
-          <> " " <> get_in(update, ["message", "from", "last_name"])
+            <> get_in(update, ["message", "text"])
+            <> "' from user "
+            <> Enum.join([
+                get_in(update, ["message", "from", "first_name"]),
+                " ",
+                get_in(update, ["message", "from", "last_name"])])
         end
       end
     end
   end
 
-  def process_updates(updates) do # process in parallel processes?
+  def process_updates(updates \\ 0) do # process in parallel processes?
     if length(updates) > 0 do
       Logger.info fn ->
         "Received #{length(updates)} updates:"
