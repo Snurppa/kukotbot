@@ -5,7 +5,7 @@ defmodule Kukotbot do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Kukotbot.Web, []),
+      #worker(Kukotbot.Web, []),
       worker(Telegram.Updates, [])
     ]
 
