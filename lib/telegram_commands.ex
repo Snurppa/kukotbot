@@ -44,6 +44,10 @@ defmodule Telegram.Commands do
         cid = get_in(update, ["message", "chat", "id"])
         msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
         Telegram.Methods.sendMessage(cid, Enum.random(msgs))
+      {:moro, %{:update => update}} ->
+        cid = get_in(update, ["message", "chat", "id"])
+        nimi = get_in(update, ["message", "from", "first_name"])
+        Telegram.Methods.sendMessage(cid, "Moro vaan #{nimi}!")
       {fail, %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
         Logger.warn fn -> "Unknown command #{fail}" end
