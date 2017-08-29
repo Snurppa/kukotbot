@@ -2,6 +2,14 @@ defmodule Kukotbot do
   use Application
 
   def start(_type, _args) do
-    Kukotbot.Supervisor.start_link
+    import Supervisor.Spec, warn: false
+
+    children = [
+      #worker(Kukotbot.Web, []),
+      supervisor(Task.Supervisor, [[name: KukotbotSupervisor, restart: :permanent]]),
+      worker(Telegram.Updates, [])
+    ]
+
+    Supervisor.start_link(children, [strategy: :one_for_one])
   end
 end

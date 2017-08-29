@@ -86,7 +86,8 @@ defmodule Telegram.Updates do
   end
 
   def start_link() do
-    Task.start_link(fn -> update_loop(0) end)
+    Logger.info fn -> "Starting Task update_loop" end
+    Task.Supervisor.start_child(KukotbotSupervisor, fn -> update_loop(0) end)
   end
 
 end
