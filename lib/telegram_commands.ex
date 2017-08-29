@@ -6,8 +6,8 @@ defmodule Telegram.Commands do
     if command_text && String.starts_with?(command_text, "/") do
       {_, command} = String.split_at(command_text, 1)
       case String.split(String.downcase(command), " ", parts: 2) do
-        [cmd, args] -> {String.to_atom(cmd), %{args: args, update: update_object}}
-        [single_command] -> {String.to_atom(single_command), %{args: "", update: update_object}}
+        [cmd, args] -> {cmd, %{args: args, update: update_object}}
+        [single_command] -> {single_command, %{args: "", update: update_object}}
       end
     else
       nil
@@ -17,12 +17,12 @@ defmodule Telegram.Commands do
 
   def execute_command(cmd) do
     case cmd do
-      {:echo, %{:args => args, :update => update}} ->
+      {"echo", %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'echo' with args #{args}" end
         cid = get_in(update, ["message", "chat", "id"])
         name = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> args)
-      {:saa, %{:args => args, :update => update}} ->
+      {"saa", %{:args => args, :update => update}} ->
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         date_to_msg = fn(date_str) ->
           {:ok, dt, _} = DateTime.from_iso8601(date_str)
@@ -40,11 +40,11 @@ defmodule Telegram.Commands do
         end
         cid = get_in(update, ["message", "chat", "id"])
         Telegram.Methods.sendMessage(cid, msg)
-      {:kajaani, %{:args => args, :update => update}} ->
+      {"kajaani", %{:args => args, :update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
         msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
         Telegram.Methods.sendMessage(cid, Enum.random(msgs))
-      {:moro, %{:update => update}} ->
+      {"moro", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
         nimi = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, "Moro vaan #{nimi}!")
