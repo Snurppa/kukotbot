@@ -1,5 +1,5 @@
 defmodule Telegram.Updates do
-  use Agent
+  use Task, restart: :permanent
   require Logger
 
   @updates_path "/getUpdates"
@@ -86,7 +86,7 @@ defmodule Telegram.Updates do
   end
 
   def start_link() do
-    Agent.start_link(fn -> update_loop(0) end)
+    Task.start_link(fn -> update_loop(0) end)
   end
 
 end
