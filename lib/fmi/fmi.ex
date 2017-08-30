@@ -30,8 +30,8 @@ defmodule FMI do
         sanitized_temps
       {:ok, %{status_code: 400}} ->
         Logger.warn fn -> "400 Weather error for #{place}" end
-      {:error, response} ->
-        Logger.error fn -> "Weather search_weather failure: #{response}" end
+      {:error, %{reason: reason}} ->
+        Logger.error fn -> "Weather search_weather failure: #{reason}" end
     end
   end
 
