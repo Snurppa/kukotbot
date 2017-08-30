@@ -23,23 +23,31 @@ defmodule Telegram.Commands do
         name = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> args)
       {"saa", %{:args => args, :update => update}} ->
+        sanitizeed_args = String.replace(args, ~r/\p{P}|[\p{Z}\t\r\n\v\f]/, "")
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         date_to_msg = fn(date_str) ->
           {:ok, dt, _} = DateTime.from_iso8601(date_str)
           local_h = dt.hour + 3 # yes, summer time hardcoded
           to_string(local_h) <> ":" <> String.pad_leading(to_string(dt.minute), 2, "0")
         end
-        msg = case FMI.search_weather(args) do
-          :ok ->
-            Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
-          temps ->
-            temps
-            |> Enum.take(6)
-            |> Enum.reduce("Sääennuste paikalle '#{args}':", fn(x,acc) ->
-              acc <> "\nklo "  <> date_to_msg.(hd(x)) <> " " <> Enum.at(x,1) <> "°C" end)
+        if byte_size(sanitizeed_args) > 0 do
+          msg = case FMI.search_weather(args) do
+            :ok ->
+              Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
+            temps ->
+              temps
+              |> Enum.take(6)
+              |> Enum.reduce("Sääennuste paikalle '#{args}':", fn(x,acc) ->
+                acc <> "\nklo "  <> date_to_msg.(hd(x)) <> " " <> Enum.at(x,1) <> "°C" end)
+          end
+          cid = get_in(update, ["message", "chat", "id"])
+          Telegram.Methods.sendMessage(cid, msg)
+        else
+          Logger.warn fn -> "Args were bad, no request sent!" end
+          text = Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
+          cid = get_in(update, ["message", "chat", "id"])
+          Telegram.Methods.sendMessage(cid, text)
         end
-        cid = get_in(update, ["message", "chat", "id"])
-        Telegram.Methods.sendMessage(cid, msg)
       {"kajaani", %{:args => args, :update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
         msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
