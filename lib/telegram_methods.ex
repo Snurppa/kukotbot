@@ -32,8 +32,8 @@ defmodule Telegram.Methods do
         end
       {:ok, %{:status_code => 400, :body => body}} ->
         Logger.error fn -> "400 sendMessage API error: #{body["description"]}" end
-      {:error, response} ->
-        Logger.error fn -> "Telegram sendMessage failure: #{response}" end
+      {:error, %{reason: reason}}} ->
+        Logger.error fn -> "Telegram sendMessage failure: #{reason}" end
     end
   end
 
