@@ -13,8 +13,8 @@ defmodule Telegram do
     case Poison.decode(body) do
       {:ok, result} ->
         result
-      {:error, result} ->
-        %{:body => %{ok: false, description: "Telegram response wasn't JSON"}}
+      {:error, _} ->
+        %{ok: false, description: "Telegram response wasn't JSON"}
     end
   end
 
