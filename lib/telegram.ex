@@ -14,7 +14,7 @@ defmodule Telegram do
       {:ok, result} ->
         result
       {:error, _} ->
-        %{ok: false, description: "Telegram response wasn't JSON"}
+        %{"ok" => false, "description" => "Telegram response wasn't JSON"}
     end
   end
 

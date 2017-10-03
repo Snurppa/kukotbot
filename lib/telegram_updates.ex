@@ -22,9 +22,11 @@ defmodule Telegram.Updates do
           Map.get(body, "result")
         else
          Logger.error fn -> "getUpdates API error: #{body["description"]}" end
+         []
        end
       {:error, response} ->
         Logger.error fn -> "Telegram getUpdates failure: #{response}" end
+        []
     end
   end
 
