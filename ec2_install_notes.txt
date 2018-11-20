@@ -25,4 +25,8 @@ cd kukotbot
 cp ~/bot.exs config/
 mix deps.get
 mix deps.compile
+mix compile
+# Run possibilities:
 # mix run --no-halt | tee ~/kukotbot.log
+# MIX_ENV=prod mix run --no-halt
+# MIX_ENV=prod elixir --detached -S mix run
