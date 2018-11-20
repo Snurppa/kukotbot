@@ -76,7 +76,7 @@ defmodule Telegram.Updates do
   end
 
   def update_loop(update_id) do
-    Logger.info fn -> "Update loop with id " <> to_string(update_id) end
+    Logger.debug fn -> "Update loop with id " <> to_string(update_id) end
     last_update = get_updates(update_id)
     |> process_updates
     if is_map(last_update) do
