@@ -25,7 +25,7 @@ defmodule Telegram.Updates do
          []
        end
       {:error, response} ->
-        Logger.error fn -> "Telegram getUpdates failure: #{response}" end
+        Logger.error fn -> "Telegram getUpdates failure: #{inspect(response)}" end
         []
     end
   end
