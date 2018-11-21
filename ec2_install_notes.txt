@@ -1,4 +1,4 @@
-sudo yum install -y epel-release git
+sudo yum install -y epel-release git wget
 
 sudo yum groupinstall "Development Tools"
 sudo yum install ncurses-devel openssl-devel
