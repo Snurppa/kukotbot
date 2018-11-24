@@ -27,7 +27,7 @@ defmodule Telegram.Commands do
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         date_to_msg = fn(date_str) ->
           {:ok, dt, _} = DateTime.from_iso8601(date_str)
-          local_h = dt.hour + 3 # yes, summer time hardcoded
+          local_h = dt.hour + 2
           to_string(local_h) <> ":" <> String.pad_leading(to_string(dt.minute), 2, "0")
         end
         if byte_size(sanitizeed_args) > 0 do
