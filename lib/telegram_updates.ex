@@ -63,9 +63,6 @@ defmodule Telegram.Updates do
       if length(commands) > 0 do
         commands
         |> Enum.map(&Telegram.Commands.execute_command/1)
-        |> Enum.max_by(fn(u) -> Map.get(u, "update_id") end)
-      else
-        Enum.max_by(updates, fn(u) -> Map.get(u, "update_id") end)
       end
     end
   end
@@ -75,21 +72,20 @@ defmodule Telegram.Updates do
     |> process_updates
   end
 
-  def update_loop(update_id) do
+  def update_loop(bot_state_pid) do
+    update_id = Kukotbot.State.get_id(bot_state_pid)
     Logger.debug fn -> "Update loop with id " <> to_string(update_id) end
-    last_update = get_updates(update_id)
-    |> process_updates
-    if is_map(last_update) do
-      update_loop(Map.get(last_update, "update_id") + 1)
-    else
-      Process.sleep(10000)
-      update_loop(update_id)
-    end
+    updates = get_updates(update_id)
+    last_update = Enum.max_by(updates, fn(u) -> Map.get(u, "update_id") end)
+    Kukotbot.State.set_id(bot_state_pid, Map.get(last_update, "update_id") + 1)
+    process_updates(updates)
+    update_loop(bot_state_pid)
   end
 
   def start_link(args) do
     Logger.info fn -> "Starting Task update_loop" end
-    Task.start_link(__MODULE__, :update_loop, args)
+    state_agent = hd args
+    Task.start_link(__MODULE__, :update_loop, [state_agent])
   end
 
 end

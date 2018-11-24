@@ -3,7 +3,8 @@ defmodule Kukotbot do
 
   def start(_type, _args) do
     children = [
-      {Telegram.Updates, [0]}
+      {Kukotbot.State, name: BotState},
+      {Telegram.Updates, [BotState]}
     ]
     Supervisor.start_link(children, [strategy: :one_for_one])
   end
