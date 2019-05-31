@@ -10,7 +10,7 @@ defmodule Telegram.Updates do
   """
   def get_updates(update_id) do
     payload = %{offset: update_id, timeout: 300}
-    case Telegram.post(@updates_path, payload, [], [recv_timeout: 3000]) do
+    case Telegram.post(@updates_path, payload, [], [recv_timeout: 600000]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         if body["ok"] do
           Map.get(body, "result")
