@@ -19,7 +19,8 @@ defmodule Telegram.Updates do
          []
        end
       {:ok, %HTTPoison.Response{status_code: status, body: body}} ->
-          Logger.error fn -> "Telegram getUpdates not 200 OK, status code was #{status}, body was #{body}" end
+        Logger.error fn -> "Telegram getUpdates not 200 OK, status code was #{status}, body was #{inspect(body)}" end
+        []
       {:error, %HTTPoison.Error{reason: :timeout}} ->
         [] # When no upates, request is timed out, expected
       {:error, response} ->
