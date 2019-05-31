@@ -9,7 +9,7 @@ defmodule Telegram.Updates do
   Returns collection of Telegram Update maps.
   """
   def get_updates(update_id) do
-    payload = %{offset: update_id, timeout: 300}
+    payload = %{offset: update_id, timeout: Application.get_env(:kukotbot, :longpoll_timeout)}
     case Telegram.post(@updates_path, payload, [], [recv_timeout: 600000]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         if body["ok"] do

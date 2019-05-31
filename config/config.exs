@@ -32,5 +32,5 @@ use Mix.Config
 import_config "bot.exs"
 
 config :kukotbot,
-  telegram_url: "https://api.telegram.org/"
-
+  telegram_url: "https://api.telegram.org/",
+  longpoll_timeout: 500
