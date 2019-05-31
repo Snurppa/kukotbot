@@ -23,6 +23,10 @@ defmodule Telegram.Updates do
         []
       {:error, %HTTPoison.Error{reason: :timeout}} ->
         [] # When no upates, request is timed out, expected
+      {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
+        Logger.error fn -> "Telegram getUpdates timed out: no response from Bot API, waiting 1 min." end
+        Process.sleep(60 * 1000)
+        []
       {:error, response} ->
         Logger.error fn -> "Telegram getUpdates failure: #{inspect(response)}" end
         []
