@@ -16,7 +16,7 @@ defmodule Kukotbot.Web do
 
   get "/" do
     conn
-    |> send_resp(200, Telegram.Updates.get_update |> Poison.encode!)
+    |> send_resp(200, Telegram.Updates.get_updates(0) |> Poison.encode!)
     |> halt
   end
 

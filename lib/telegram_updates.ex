@@ -4,26 +4,24 @@ defmodule Telegram.Updates do
 
   @updates_path "/getUpdates"
 
-  def get_updates do
-    Telegram.get!(@updates_path)
-    |> Map.get(:body)
-    |> Map.get("result")
-  end
-
   @doc """
   Fetches updates from Telegram /getUpdates method.
   Returns collection of Telegram Update maps.
   """
   def get_updates(update_id) do
     payload = %{offset: update_id, timeout: 300}
-    case Telegram.post(@updates_path, payload, [], [recv_timeout: 310000]) do
-      {:ok, %{:body => body}} ->
+    case Telegram.post(@updates_path, payload, [], [recv_timeout: 3000]) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         if body["ok"] do
           Map.get(body, "result")
         else
-         Logger.error fn -> "getUpdates API error: #{body["description"]}" end
+         Logger.error fn -> "getUpdates 200 OK API error: #{body["description"]}" end
          []
        end
+      {:ok, %HTTPoison.Response{status_code: status, body: body}} ->
+          Logger.error fn -> "Telegram getUpdates not 200 OK, status code was #{status}, body was #{body}" end
+      {:error, %HTTPoison.Error{reason: :timeout}} ->
+        [] # When no upates, request is timed out, expected
       {:error, response} ->
         Logger.error fn -> "Telegram getUpdates failure: #{inspect(response)}" end
         []
@@ -51,7 +49,7 @@ defmodule Telegram.Updates do
     end
   end
 
-  def process_updates(updates \\ 0) do # process in parallel processes?
+  def process_updates(updates) do # process in parallel processes?
     if length(updates) > 0 do
       Logger.info fn ->
         "Received #{length(updates)} updates:"
@@ -67,17 +65,19 @@ defmodule Telegram.Updates do
     end
   end
 
-  def get_update do
-    get_updates()
-    |> process_updates
-  end
-
   def update_loop(bot_state_pid) do
     update_id = Kukotbot.State.get_id(bot_state_pid)
     Logger.debug fn -> "Update loop with id " <> to_string(update_id) end
     updates = get_updates(update_id)
-    last_update = Enum.max_by(updates, fn(u) -> Map.get(u, "update_id") end)
-    Kukotbot.State.set_id(bot_state_pid, Map.get(last_update, "update_id") + 1)
+    new_id = if Enum.empty?(updates) do
+               update_id
+             else
+               updates
+               |> Enum.max_by(fn(u) -> Map.get(u, "update_id") end)
+               |> Map.get("update_id")
+               |> Kernel.+(1)
+             end
+    Kukotbot.State.set_id(bot_state_pid, new_id)
     process_updates(updates)
     update_loop(bot_state_pid)
   end
