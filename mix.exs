@@ -4,7 +4,7 @@ defmodule Kukotbot.Mixfile do
   def project do
     [app: :kukotbot,
      version: "0.1.0",
-     elixir: "~> 1.7",
+     elixir: "~> 1.9",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
