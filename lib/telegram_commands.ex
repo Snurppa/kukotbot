@@ -27,8 +27,10 @@ defmodule Telegram.Commands do
         Logger.info fn -> "Executing 'saa' with args #{args}" end
         date_to_msg = fn(date_str) ->
           {:ok, dt, _} = DateTime.from_iso8601(date_str)
-          local_h = dt.hour + 2
-          to_string(local_h) <> ":" <> String.pad_leading(to_string(dt.minute), 2, "0")
+          {:ok, helsinki} = DateTime.shift_zone(dt, "Europe/Helsinki")
+          # minute is represented as integer, pad < 10 numbers with '0'
+          minute_formatted = String.pad_leading(Integer.to_string(helsinki.minute), 2, "0")
+           "#{helsinki.hour}:#{minute_formatted}"
         end
         if byte_size(sanitizeed_args) > 0 do
           msg = case FMI.search_weather(args) do
@@ -38,7 +40,8 @@ defmodule Telegram.Commands do
               temps
               |> Enum.take(6)
               |> Enum.reduce("Sääennuste paikalle '#{args}':", fn(x,acc) ->
-                acc <> "\nklo "  <> date_to_msg.(hd(x)) <> " " <> Enum.at(x,1) <> "°C" end)
+                acc <> "\nklo "  <> date_to_msg.(hd(x)) <> "\t\t" <> Enum.at(x,1) <> "°C"
+              end)
           end
           cid = get_in(update, ["message", "chat", "id"])
           Telegram.Methods.sendMessage(cid, msg)

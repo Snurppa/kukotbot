@@ -29,6 +29,8 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 import_config "bot.exs"
 
 config :kukotbot,
