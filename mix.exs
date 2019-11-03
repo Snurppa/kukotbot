@@ -29,8 +29,8 @@ defmodule Kukotbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:cowboy, "~> 2.6.0"},
-     {:plug, "~> 1.7.1"},
-     {:httpoison, "~> 1.4.0"},
+     {:plug, "~> 1.8.0"},
+     {:httpoison, "~> 1.6.0"},
      {:poison, "~> 4.0"},
      {:exml, "~> 0.1.1"}]
   end
