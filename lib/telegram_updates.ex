@@ -73,6 +73,7 @@ defmodule Telegram.Updates do
   def update_loop(bot_state_pid) do
     update_id = Kukotbot.State.get_id(bot_state_pid)
     Logger.debug fn -> "Update loop with id " <> to_string(update_id) end
+    // TODO: separate call? async? how to handle updating the update_id?
     updates = get_updates(update_id)
     new_id = if Enum.empty?(updates) do
                update_id
@@ -83,7 +84,9 @@ defmodule Telegram.Updates do
                |> Kernel.+(1)
              end
     Kukotbot.State.set_id(bot_state_pid, new_id)
+    // TODO: create (async?) task
     process_updates(updates)
+    // TODO: what if would shutdown here, and let supervisor start a new update_loop task?
     update_loop(bot_state_pid)
   end
 

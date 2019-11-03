@@ -3,10 +3,12 @@ sudo yum install -y epel-release git wget
 sudo yum groupinstall "Development Tools"
 sudo yum install ncurses-devel openssl-devel
 # erlang
-wget http://www.erlang.org/download/otp_src_21.1.tar.gz
-tar -zxvf otp_src_21.1.tar.gz
-rm otp_src_21.1.tar.gz
-cd otp_src_21.1/
+# NOTE, there seems to be prebuild packges available in https://www.erlang-solutions.com/resources/download.html
+# Consider that over building below
+wget http://www.erlang.org/download/otp_src_22.1.tar.gz
+tar -zxvf otp_src_22.1.tar.gz
+rm otp_src_22.1.tar.gz
+cd otp_src_22.1/
 ./configure
 make
 sudo make install
@@ -14,9 +16,9 @@ sudo make install
 cd ..
 
 # elixir Precompiled
-wget https://github.com/elixir-lang/elixir/releases/download/v1.7.4/Precompiled.zip
+wget https://github.com/elixir-lang/elixir/releases/download/v1.9.2/Precompiled.zip
 unzip -d elixir Precompiled
-echo "PATH=\$PATH:/home/ec2-user/elixir/bin" >> ~/.bashrc
+echo "PATH=\$PATH:$HOME/elixir/bin" >> ~/.bashrc
 
 
 git clone https://github.com/Snurppa/kukotbot.git
