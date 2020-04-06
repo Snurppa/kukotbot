@@ -31,7 +31,7 @@ use Mix.Config
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
-if File.exists?("bot.exs"), do: import_config "bot.exs"
+import_config "bot.exs"
 
 config :kukotbot,
   telegram_url: "https://api.telegram.org/",
