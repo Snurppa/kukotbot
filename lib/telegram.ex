@@ -1,9 +1,9 @@
 defmodule Telegram do
   use HTTPoison.Base
 
-  @bot_url Application.get_env(:kukotbot, :telegram_url) <> "bot" <> Application.get_env(:kukotbot, :bot_api_key)
+  def bot_url, do: Application.get_env(:kukotbot, :telegram_url) <> "bot" <> Application.fetch_env!(:kukotbot, :bot_api_key)
 
-  def process_url(suffix), do: @bot_url <> suffix
+  def process_url(suffix), do: bot_url() <> suffix
   def process_request_headers(headers) do
     headers ++ ["Accept": "application/json", "Content-Type": "application/json"]
   end

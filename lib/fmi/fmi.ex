@@ -4,7 +4,7 @@ defmodule FMI do
   """
   require Logger
 
-  @fmi_get_feature_url "http://data.fmi.fi/fmi-apikey/" <> Application.get_env(:kukotbot, :fmi_api_key) <> "/wfs?request=getFeature"
+  @fmi_get_feature_url Application.get_env(:kukotbot, :fmi_host) <> "/wfs?request=getFeature"
   @fmi_hirlam_point_timevalue "fmi::forecast::hirlam::surface::point::timevaluepair"
 
   def surface_point_url_for_place(place) do

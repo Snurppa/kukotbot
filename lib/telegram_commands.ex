@@ -51,7 +51,7 @@ defmodule Telegram.Commands do
           cid = get_in(update, ["message", "chat", "id"])
           Telegram.Methods.sendMessage(cid, text)
         end
-      {"kajaani", %{:args => args, :update => update}} ->
+      {"kajaani", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
         msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
         Telegram.Methods.sendMessage(cid, Enum.random(msgs))
