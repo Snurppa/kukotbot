@@ -17,6 +17,4 @@ defmodule Telegram do
         %{"ok" => false, "description" => "Telegram response wasn't JSON"}
     end
   end
-
-  def bot_url, do: @bot_url
 end
