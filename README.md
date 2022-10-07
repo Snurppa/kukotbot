@@ -32,3 +32,11 @@ With mix:
 ```
  mix run --no-halt | tee kukotbot.log
  ```
+
+# Docker
+
+mix distillery.init was:
+
+```shell
+$ docker run -v /home/joni/code/kukotbot:/opt/app --workdir /opt/app elixir:1.9 bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get &&  mix distillery.init'
+```
