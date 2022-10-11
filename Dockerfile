@@ -44,7 +44,7 @@ RUN \
 
 # From this line onwards, we're in a new image, which will be the image used in production
 FROM alpine:${ALPINE_VERSION}
-
+ARG APP_NAME
 
 RUN apk update && \
     apk add --no-cache \
