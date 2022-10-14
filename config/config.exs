@@ -1,6 +1,5 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-use Mix.Config
+# https://hexdocs.pm/elixir/1.12/Config.html
+import Config
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -31,7 +30,7 @@ use Mix.Config
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
-import_config "bot.exs"
+import_config "#{config_env()}.exs"
 
 config :kukotbot,
   telegram_url: "https://api.telegram.org/",

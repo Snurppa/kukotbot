@@ -1,7 +1,9 @@
 defmodule Kukotbot do
   use Application
+  require Logger
 
   def start(_type, _args) do
+    Logger.debug fn -> "Starting Kukotbot, test value is: #{Application.get_env(:kukotbot, :env_test)} " end
     children = [
       {Kukotbot.State, name: BotState},
       {Telegram.Updates, [BotState]}

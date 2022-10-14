@@ -1,6 +1,6 @@
 #FROM hexpm/elixir:1.9.4-erlang-22.3.4.26-debian-bullseye-20210902
 ARG ALPINE_VERSION=3.16
-FROM elixir:1.9.4-alpine AS builder
+FROM elixir:1.11.4-alpine AS builder
 
 # The following are build arguments used to change variable parts of the image.
 # The name of your application/release (required)

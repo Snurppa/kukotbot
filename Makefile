@@ -18,4 +18,6 @@ build: ## Build the Docker image
 run: ## Run the app in Docker
 	docker run \
         --expose 4000 -p 4000:4000 \
+        -e KUKOTBOT_API_KEY="$$KUKOTBOT_API_KEY"\
+        -e KUKOTBOT_TEST_VAR="FOOFF"\
         --rm -it $(APP_NAME):latest

@@ -4,7 +4,7 @@ defmodule Kukotbot.Mixfile do
   def project do
     [app: :kukotbot,
      version: "0.1.0",
-     elixir: "~> 1.9",
+     elixir: "~> 1.11",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -29,11 +29,11 @@ defmodule Kukotbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:distillery, "~> 2.0"},
-     {:tzdata, "~> 1.0.1"},
+     {:tzdata, "~> 1.1.1"},
      {:cowboy, "~> 2.6.0"},
-     {:plug, "~> 1.8.0"},
-     {:httpoison, "~> 1.6.0"},
-     {:poison, "~> 4.0"},
+     {:plug, "~> 1.13"},
+     {:httpoison, "~> 1.8.2"},
+     {:poison, "~> 5.0"},
      {:exml, "~> 0.1.1"}]
   end
 end

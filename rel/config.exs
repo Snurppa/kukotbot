@@ -53,12 +53,14 @@ release :kukotbot do
   ]
   set config_providers: [
     {Distillery.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]},
-    {Distillery.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/bot.exs"]}
+    {Distillery.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/runtime.exs"]},
+    {Distillery.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/prod.exs"]}
   ]
   set overlays: [
     {:copy, "config/config.exs", "etc/config.exs"},
+    {:copy, "config/prod.exs", "etc/prod.exs"},
     # You can copy configs straight from config/, but I would avoid doing so.
     # from https://hexdocs.pm/distillery/config/runtime.html#mix-config-provider
-    {:copy, "config/bot.exs", "etc/bot.exs"}
+    {:copy, "rel/config/runtime.exs", "etc/runtime.exs"}
   ]
 end
