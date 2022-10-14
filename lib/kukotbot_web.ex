@@ -20,6 +20,12 @@ defmodule Kukotbot.Web do
     |> halt
   end
 
+  get "/ping" do
+    conn
+    |> send_resp(200, "pong")
+    |> halt
+  end
+
   get "/url" do
     conn
     |> send_resp(200, Telegram.bot_url)

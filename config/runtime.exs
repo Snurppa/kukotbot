@@ -5,4 +5,5 @@ config :kukotbot,
   bot_api_key: System.get_env("KUKOTBOT_API_KEY")
 
 config :logger,
-  level: System.get_env("LOG_LEVEL") || :info
+  level: (System.get_env("LOG_LEVEL") || "info")
+         |> String.to_existing_atom

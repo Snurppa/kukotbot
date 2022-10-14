@@ -33,6 +33,6 @@ config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 import_config "#{config_env()}.exs"
 
 config :kukotbot,
-  telegram_url: "https://api.telegram.org/",
+  telegram_url: "https://api.telegram.org",
   fmi_host: "https://opendata.fmi.fi",
   longpoll_timeout: 500
