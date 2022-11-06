@@ -22,3 +22,6 @@ run: ## Run the app in Docker
         -e KUKOTBOT_API_KEY="$$KUKOTBOT_API_KEY"\
         -e KUKOTBOT_TEST_VAR="FOOFF"\
         --rm -it $(APP_NAME):latest
+
+dev: ## Start (dev) in Elixir container with --no-start flag
+	docker run -it --name kukotbot-dev -v "$$PWD":/usr/src/myapp -w /usr/src/myapp elixir:1.11.4 iex -S mix run --no-start

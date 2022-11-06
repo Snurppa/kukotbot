@@ -5,9 +5,9 @@ defmodule Telegram.Commands do
     command_text = get_in(update_object, ["message", "text"])
     if command_text && String.starts_with?(command_text, "/") do
       {_, command} = String.split_at(command_text, 1)
-      case String.split(String.downcase(command), " ", parts: 2) do
-        [cmd, args] -> {cmd, %{args: args, update: update_object}}
-        [single_command] -> {single_command, %{args: "", update: update_object}}
+      case String.split(command, " ", parts: 2) do
+        [cmd, args] -> {String.downcase(cmd), %{args: args, update: update_object}}
+        [single_command] -> {String.downcase(single_command), %{args: "", update: update_object}}
       end
     else
       nil
@@ -18,7 +18,7 @@ defmodule Telegram.Commands do
   def execute_command(cmd) do
     case cmd do
       {"echo", %{:args => args, :update => update}} ->
-        Logger.info fn -> "Executing 'echo' with args #{args}" end
+        Logger.debug fn -> "Executing 'echo' with args #{args}" end
         cid = get_in(update, ["message", "chat", "id"])
         name = get_in(update, ["message", "from", "first_name"])
         Telegram.Methods.sendMessage(cid, name <> " sanoi: " <> args)
@@ -35,7 +35,7 @@ defmodule Telegram.Commands do
         if byte_size(sanitizeed_args) > 0 do
           msg = case FMI.search_weather(args) do
             :ok ->
-              Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
+              Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?", "Soita Pekka Poudalle"])
             temps ->
               temps
               |> Enum.take(6)
@@ -47,13 +47,13 @@ defmodule Telegram.Commands do
           Telegram.Methods.sendMessage(cid, msg)
         else
           Logger.warn fn -> "Args were bad, no request sent!" end
-          text = Enum.random(["Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
+          text = Enum.random(["Herää pahvi", "Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
           cid = get_in(update, ["message", "chat", "id"])
           Telegram.Methods.sendMessage(cid, text)
         end
       {"kajaani", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
-        msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!"]
+        msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!", "Neo nähty Luotikujalla"]
         Telegram.Methods.sendMessage(cid, Enum.random(msgs))
       {"moro", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
