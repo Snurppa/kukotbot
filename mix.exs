@@ -30,8 +30,7 @@ defmodule Kukotbot.Mixfile do
   defp deps do
     [{:distillery, "~> 2.0"},
      {:tzdata, "~> 1.1.1"},
-     {:cowboy, "~> 2.6.0"},
-     {:plug, "~> 1.13"},
+     {:plug_cowboy, "~> 2.6.0"},
      {:httpoison, "~> 1.8.2"},
      {:poison, "~> 5.0"},
      {:exml, "~> 0.1.1"}]

@@ -47,4 +47,6 @@ WORKDIR /opt/app
 
 COPY --from=builder /opt/app/_build/${MIX_ENV}/rel/${APP_NAME}/ .
 
+EXPOSE 8080
+
 CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} start

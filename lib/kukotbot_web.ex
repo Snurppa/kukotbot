@@ -4,32 +4,33 @@ defmodule Kukotbot.Web do
 
   plug Plug.Logger
   plug :match
+
+  plug Plug.Parsers,
+       parsers: [:json],
+       pass:  ["application/json"],
+       json_decoder: Poison
+
   plug :dispatch
-
-  def init(options) do
-    options
-  end
-
-  def start_link do
-    {:ok, _} = Plug.Adapters.Cowboy.http Kukotbot.Web, []
-  end
 
   get "/" do
     conn
     |> send_resp(200, Telegram.Updates.get_updates(0) |> Poison.encode!)
-    |> halt
   end
 
   get "/ping" do
     conn
     |> send_resp(200, "pong")
-    |> halt
   end
 
   get "/url" do
     conn
     |> send_resp(200, Telegram.bot_url)
-    |> halt
+  end
+
+  post "/telegram/hook" do
+    Logger.info fn -> "Received Telegram POST #{to_string(conn.body_params)}" end
+    #IO.inspect conn.body_params # Prints JSON POST body
+    send_resp(conn, 200, "Success!")
   end
 
   match _ do
