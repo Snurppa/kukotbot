@@ -28,8 +28,7 @@ defmodule Kukotbot.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:distillery, "~> 2.0"},
-     {:tzdata, "~> 1.1.1"},
+    [{:tzdata, "~> 1.1.1"},
      {:plug_cowboy, "~> 2.6.0"},
      {:httpoison, "~> 1.8.2"},
      {:poison, "~> 5.0"},
