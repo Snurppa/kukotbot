@@ -47,13 +47,13 @@ defmodule Telegram.Commands do
           Telegram.Methods.sendMessage(cid, msg)
         else
           Logger.warn fn -> "Args were bad, no request sent!" end
-          text = Enum.random(["Herää pahvi", "Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
+          text = Enum.random(["Herää pahvi! Viimeinen yritys!", "Ei pysty, liian hapokasta", "No habla finlandes", "Mitä tuohon nyt sanoisi?"])
           cid = get_in(update, ["message", "chat", "id"])
           Telegram.Methods.sendMessage(cid, text)
         end
       {"kajaani", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
-        msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!", "Neo nähty Luotikujalla"]
+        msgs = ["Kajjaaaani! Ostikko jo junaliput pois?", "Mantan rilliltä makkaraperunat... Ja menossa.", "Millon Vimpeliin?", "Hokki Liigaan!", "Matrixin Neo nähty Luotikujalla", "Kajaani – elämää 26/7"]
         Telegram.Methods.sendMessage(cid, Enum.random(msgs))
       {"moro", %{:update => update}} ->
         cid = get_in(update, ["message", "chat", "id"])
